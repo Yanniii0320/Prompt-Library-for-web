@@ -1,0 +1,262 @@
+/* --- Base Styles --- */
+:root {
+  --primary-bg: #f0f2f5;
+  --secondary-bg: #ffffff;
+  --sidebar-bg: #e9ebee;
+  --accent-color: #4a90e2;
+  --text-color: #333;
+  --border-color: #dcdfe6;
+  --connector-color: #ff4d4f;
+  --connector-active-color: #ff9a9b;
+  --line-color: #4a90e2;
+  --resizer-color: #c0c4cc;
+  --resizer-hover-color: #a0a4ac;
+  --resizer-width: 5px; /* Width of the draggable area */
+  --min-column-width: 150px; /* Minimum width for sidebars */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  display: flex;
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll */
+  /* Prevent text selection during resize */
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  font-size: 14px; /* Example base font size */
+}
+/* Add a class during resize for global cursor style */
+body.is-resizing * {
+ cursor: col-resize !important; /* Force cursor globally */
+}
+
+
+.container {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  overflow: hidden; /* Important to contain flex items */
+}
+
+/* --- Column Base Styles --- */
+.column {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent content overflow */
+  position: relative; /* Needed if using absolute positioning within */
+  box-sizing: border-box;
+}
+
+
+/* --- Sidebar Styles --- */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex; /* Use flex for vertical layout */
+  flex-direction: column; /* Stack elements vertically */
+}
+
+.left-sidebar {
+  /* Use flex-basis for resizable width */
+  flex: 0 0 250px; /* Initial basis, set via state in React */
+  border-right: 1px solid var(--border-color);
+  min-width: var(--min-column-width); /* Minimum width */
+}
+
+.right-sidebar {
+  /* Use flex-basis for resizable width */
+  flex: 0 0 300px; /* Initial basis, set via state in React */
+  border-left: 1px solid var(--border-color);
+  min-width: var(--min-column-width); /* Minimum width */
+}
+
+.sidebar-content-wrapper {
+   flex-grow: 1; /* Take available space */
+   overflow-y: auto; /* Enable vertical scroll */
+   overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+
+.sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.category-filter {
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+#prompt-category-filter {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--secondary-bg);
+  font-size: 0.9em;
+  cursor: pointer;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+  padding-right: 30px;
+}
+#prompt-category-filter:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+
+.prompt-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* Let wrapper handle scroll */
+}
+
+.prompt-list li {
+  margin-bottom: 10px;
+}
+
+.prompt-button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9em;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.prompt-button:hover { background-color: #f8f9fa; border-color: #c0c4cc; }
+.prompt-button:active { background-color: #e9ecef; }
+
+/* --- Resizer Styles --- */
+.resizer {
+  flex: 0 0 var(--resizer-width); /* Fixed width, no grow/shrink */
+  background-color: var(--resizer-color);
+  cursor: col-resize;
+  height: 100%;
+  transition: background-color 0.2s ease;
+  z-index: 50; /* Ensure it's above content but below modals if any */
+  position: relative; /* Needed for pseudo-element positioning */
+}
+.resizer:hover {
+  background-color: var(--resizer-hover-color);
+}
+/* Add a subtle indicator within the resizer */
+.resizer::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 30px; /* Or adjust as needed */
+  background-color: rgba(0,0,0,0.2);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+
+
+/* --- Main Content Styles --- */
+.main-content {
+  flex: 1 1 0; /* Allow grow and shrink, basis 0 means take available space */
+  background-color: var(--secondary-bg);
+  padding: 20px;
+  min-width: 200px; /* Minimum width for the center panel */
+  /* Ensure main content is also a flex column for its children */
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-prompts-wrapper {
+  flex-grow: 1;
+  position: relative;
+  border: 1px dashed var(--border-color);
+  margin-bottom: 20px;
+  background-color: #fdfdfd;
+  overflow: hidden;
+}
+
+#selected-prompts-area {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+}
+
+.selected-prompt {
+  position: absolute; background-color: var(--accent-color); color: white;
+  padding: 8px 12px; border-radius: 15px; cursor: grab; font-size: 0.9em;
+  white-space: nowrap; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none; z-index: 10; border: 1px solid #3a7bc8;
+}
+.selected-prompt.dragging { cursor: grabbing; opacity: 0.8; z-index: 11; }
+
+.connector {
+  position: absolute; top: -5px; right: -5px; width: 12px; height: 12px;
+  background-color: var(--connector-color); border-radius: 50%;
+  cursor: crosshair; border: 1px solid rgba(0,0,0,0.2); z-index: 12;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.connector:hover { transform: scale(1.2); }
+.connector.active { background-color: var(--connector-active-color); transform: scale(1.3); }
+
+
+#prompt-lines {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 5;
+}
+#prompt-lines line {
+  /* stroke: var(--line-color); - Handled in JSX now */
+  /* stroke-width: 2; - Handled in JSX now */
+  stroke-linecap: round; }
+
+.controls {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; /* Space below controls */
+  flex-shrink: 0; /* Prevent controls from shrinking */
+}
+
+#combined-prompt {
+  flex-grow: 1; height: 60px; padding: 10px; border: 1px solid var(--border-color);
+  border-radius: 4px; font-family: monospace; resize: none; background-color: #f8f9fa;
+}
+
+#push-button {
+  padding: 10px 20px; background-color: var(--accent-color); color: white;
+  border: none; border-radius: 4px; cursor: pointer; font-size: 1em;
+  transition: background-color 0.2s; flex-shrink: 0;
+}
+#push-button:hover { background-color: #3a7bc8; }
+
+/* --- Right Sidebar Code Display --- */
+.right-sidebar h2 { margin-bottom: 20px; flex-shrink: 0; }
+
+#generated-code-wrapper {
+  /* Removed flex-grow: 1 here, let sidebar-content-wrapper handle it */
+  background-color: #282c34; color: #abb2bf;
+  padding: 15px; border-radius: 4px;
+  overflow: auto; /* Allow scroll within the code block itself */
+  box-sizing: border-box;
+  height: 100%; /* Fill the wrapper */
+}
+
+
+#generated-code {
+  font-family: 'Courier New', Courier, monospace; font-size: 0.9em;
+  white-space: pre; margin: 0;
+}

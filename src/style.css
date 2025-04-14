@@ -1,0 +1,313 @@
+/* --- Base Styles --- */
+:root {
+    --primary-bg: #f0f2f5;
+    --secondary-bg: #ffffff;
+    --sidebar-bg: #e9ebee;
+    --accent-color: #4a90e2;
+    --text-color: #333;
+    --border-color: #dcdfe6;
+    --connector-color: #ff4d4f;
+    --connector-active-color: #ff9a9b;
+    --line-color: #4a90e2;
+    --resizer-color: #c0c4cc;
+    --resizer-hover-color: #a0a4ac;
+    --resizer-width: 5px; /* Width of the draggable area */
+    --min-column-width: 150px; /* Minimum width for sidebars */
+}
+
+/* --- ADDED/MODIFIED FOR FULL SCREEN LAYOUT --- */
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+   box-sizing: inherit;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    display: flex; /* Make body a flex container */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    overflow: hidden; /* Prevent body scroll */
+    /* Prevent text selection during resize */
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+/* Add a class during resize for global cursor style */
+body.is-resizing, body.is-resizing * { /* Apply to body itself too */
+   cursor: col-resize !important; /* Force cursor globally */
+}
+
+/* --- ADDED: Style the React root element --- */
+#root {
+  display: flex; /* Make it a flex container */
+  flex: 1; /* Allow it to grow and fill the body */
+  height: 100%; /* Take full height of body */
+  width: 100%; /* Take full width of body */
+}
+
+/* --- Container Styles --- */
+.container {
+    display: flex;
+    flex: 1; /* Allow it to grow and fill #root */
+    width: 100%; /* Ensure it takes full width */
+    overflow: hidden; /* Important to contain flex items */
+    /* height: 100%; is not needed due to flex: 1 */
+}
+
+/* --- Column Base Styles --- */
+.column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content overflow */
+    position: relative; /* Needed if using absolute positioning within */
+    box-sizing: border-box;
+}
+
+
+/* --- Sidebar Styles --- */
+.sidebar {
+    background-color: var(--sidebar-bg);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* flex-grow/shrink/basis are handled by inline styles in React now */
+}
+
+.left-sidebar {
+    /* Initial width set by inline style in React */
+    border-right: 1px solid var(--border-color);
+    min-width: var(--min-column-width); /* Minimum width */
+}
+
+.right-sidebar {
+    /* Initial width set by inline style in React */
+    border-left: 1px solid var(--border-color);
+    min-width: var(--min-column-width); /* Minimum width */
+}
+
+.sidebar-content-wrapper {
+     flex-grow: 1; /* Take available space */
+     overflow-y: auto; /* Enable vertical scroll */
+     overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+
+.sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #555;
+    flex-shrink: 0;
+}
+
+.category-filter {
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+#prompt-category-filter {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--secondary-bg);
+    font-size: 0.9em;
+    cursor: pointer;
+    appearance: none; /* Remove default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 30px; /* Space for the arrow */
+}
+ #prompt-category-filter:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+
+.prompt-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prompt-list li {
+    margin-bottom: 10px;
+}
+
+.prompt-button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9em;
+    transition: background-color 0.2s, border-color 0.2s;
+    white-space: nowrap; /* Prevent button text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.prompt-button:hover { background-color: #f8f9fa; border-color: #c0c4cc; }
+.prompt-button:active { background-color: #e9ecef; }
+
+/* --- Resizer Styles --- */
+.resizer {
+    flex: 0 0 var(--resizer-width); /* Fixed width, no grow/shrink */
+    background-color: var(--resizer-color);
+    /* cursor: col-resize; Handled by inline style for clarity */
+    height: 100%;
+    transition: background-color 0.2s ease;
+    z-index: 50;
+    position: relative;
+}
+.resizer:hover {
+    background-color: var(--resizer-hover-color);
+}
+.resizer::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 30px;
+    background-color: rgba(0,0,0,0.2);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+}
+
+
+/* --- Main Content Styles --- */
+.main-content {
+    flex: 1 1 0; /* Allow grow/shrink, basis 0 to take available space */
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    min-width: 200px; /* Minimum width for the center panel */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent its own content from overflowing */
+}
+
+.selected-prompts-wrapper {
+    flex-grow: 1; /* Take available vertical space */
+    position: relative; /* Context for absolute positioned children (SVG, area) */
+    border: 1px dashed var(--border-color);
+    /* margin-bottom: 20px; */
+    background-color: #fdfdfd;
+    overflow: hidden; /* Clip prompts/lines outside */
+}
+
+/* Area containing absolutely positioned prompts */
+/* No specific styles needed if it's just a positioning container */
+/* #selected-prompts-area {} */
+
+/* SVG layer sits on top */
+/* #prompt-lines styles handled by inline style in React */
+
+.selected-prompt {
+    /* position: absolute; Handled by inline style */
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 15px;
+    /* cursor: grab; Handled by inline style */
+    font-size: 0.9em;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    /* z-index: 10; Handled by inline style */
+    border: 1px solid #3a7bc8;
+    transition: opacity 0.2s; /* Added transition for dragging */
+}
+.selected-prompt.dragging {
+    /* cursor: grabbing; Handled by inline style */
+    opacity: 0.8;
+    /* z-index: 11; Handled by inline style */
+}
+
+.connector {
+    position: absolute;
+    top: -5px; right: -5px;
+    width: 12px; height: 12px;
+    background-color: var(--connector-color);
+    border-radius: 50%;
+    /* cursor: crosshair; Handled by inline style */
+    border: 1px solid rgba(0,0,0,0.2);
+    z-index: 12; /* Above prompt text */
+    transition: background-color 0.2s, transform 0.2s;
+}
+.connector:hover { transform: scale(1.2); }
+.connector.active { background-color: var(--connector-active-color); transform: scale(1.3); }
+
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto; /* Push controls to bottom if main content shrinks */
+    /* margin-bottom: 0; Remove bottom margin if padding is sufficient */
+    flex-shrink: 0; /* Prevent controls from shrinking */
+    padding-top: 20px; /* Add padding if removing margin-bottom */
+}
+
+#combined-prompt {
+    flex-grow: 1;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: monospace;
+    resize: none;
+    background-color: #f8f9fa;
+}
+
+#push-button {
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+#push-button:hover { background-color: #3a7bc8; }
+
+/* --- Right Sidebar Code Display --- */
+ .right-sidebar h2 { margin-bottom: 10px; flex-shrink: 0; } /* Reduced margin */
+
+ #generated-code-wrapper {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 15px;
+    border-radius: 4px;
+    overflow: auto;
+    box-sizing: border-box;
+    height: 100%; /* Fill the wrapper */
+    flex-grow: 1; /* Ensure it fills space within sidebar-content-wrapper */
+ }
+
+#generated-code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    white-space: pre;
+    margin: 0;
+}

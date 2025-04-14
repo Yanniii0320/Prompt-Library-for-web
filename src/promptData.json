@@ -1,0 +1,15 @@
+[
+  {
+    "id": "text-pressure-effect-01",
+    "name": "文本压力效果 (Text Pressure)",
+    "category": "文本动画",
+    "description": "鼠标靠近时文字会产生挤压变形效果，利用可变字体特性。",
+    "preview": "previews/text-pressure-preview.gif",
+    "codeSnippet": {
+      "import": "import TextPressure from './components/TextPressure';",
+      "usage": "<div style={{\n  position: 'relative', \n  height: '300px', \n  display: 'flex', \n  justifyContent: 'center', \n  alignItems: 'center'\n}}>\n  <TextPressure\n    text=\"Hello!\"\n    /* 可选属性: flex, alpha, stroke, width, weight, italic, textColor, strokeColor, minFontSize, etc. */\n  />\n</div>",
+      "componentLink": "https://reactbits.dev/default/TextAnimations/TextPressure"
+    },
+    "promptFragment": "创建一个交互式文本效果：当鼠标光标在文本附近移动时，文本中的每个字符会根据与光标的距离动态地改变其'可变字体'属性（例如，宽度 'wdth'、粗细 'wght'、斜体 'ital'），产生一种被'挤压'或'相互推挤'的视觉效果。此效果需要使用 JavaScript 监听鼠标位置，并通过 CSS 的 `font-variation-settings` 动态更新样式。需要确保使用的字体支持所需的可变轴。请导入并使用项目中已有的名为 'TextPressure' 的 React 组件来实现此效果，并将其放置在一个有相对定位和固定高度的容器内居中显示，初始文本设为 'Hello!'。"
+  }
+]
