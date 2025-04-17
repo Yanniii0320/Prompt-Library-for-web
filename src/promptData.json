@@ -2,7 +2,7 @@
   {
     "id": "text-pressure-effect-01",
     "name": "文本压力效果 (Text Pressure)",
-    "category": "文本动画",
+    "category": "文字效果",
     "description": "鼠标靠近时文字会产生挤压变形效果，利用可变字体特性。",
     "preview": "previews/text-pressure-preview.gif",
     "codeSnippet": {
@@ -10,6 +10,63 @@
       "usage": "<div style={{\n  position: 'relative', \n  height: '300px', \n  display: 'flex', \n  justifyContent: 'center', \n  alignItems: 'center'\n}}>\n  <TextPressure\n    text=\"Hello!\"\n    /* 可选属性: flex, alpha, stroke, width, weight, italic, textColor, strokeColor, minFontSize, etc. */\n  />\n</div>",
       "componentLink": "https://reactbits.dev/default/TextAnimations/TextPressure"
     },
+    "type": "fragment",
     "promptFragment": "创建一个交互式文本效果：当鼠标光标在文本附近移动时，文本中的每个字符会根据与光标的距离动态地改变其'可变字体'属性（例如，宽度 'wdth'、粗细 'wght'、斜体 'ital'），产生一种被'挤压'或'相互推挤'的视觉效果。此效果需要使用 JavaScript 监听鼠标位置，并通过 CSS 的 `font-variation-settings` 动态更新样式。需要确保使用的字体支持所需的可变轴。请导入并使用项目中已有的名为 'TextPressure' 的 React 组件来实现此效果，并将其放置在一个有相对定位和固定高度的容器内居中显示，初始文本设为 'Hello!'。"
+  },
+  {
+    "id": "falling-text-effect-01",
+    "name": "物理掉落文字 (Falling Text)",
+    "category": "文字效果",
+    "description": "利用 matter-js 物理引擎，使文本单词像物理对象一样掉落、碰撞，并可通过鼠标交互。",
+    "preview": "previews/falling-text-preview.gif",
+    "codeSnippet": {
+      "import": "import FallingText from './components/FallingText';",
+      "usage": "<div style={{\n  position: 'relative',\n  height: '400px', \n  width: '100%',\n  border: '1px solid #ccc', \n  overflow: 'hidden' \n}}>\n  <FallingText\n    text=\"These words will fall down!\"\n    /* 可选属性: \n       highlightWords={['fall']}\n       highlightClass=\"your-highlight-style\" \n       trigger=\"auto\" // 'auto', 'scroll', 'click', 'hover'\n       gravity={1}\n       fontSize=\"1.5rem\"\n       mouseConstraintStiffness={0.2}\n       backgroundColor=\"transparent\"\n       wireframes={false} // matter-js 调试线框\n    */\n  />\n</div>",
+      "componentLink": "https://reactbits.dev/default/TextAnimations/FallingText"
+    },
+    "type": "fragment",
+    "promptFragment": "创建一个物理文本掉落效果：文本会被分解成单个单词，每个单词作为一个物理对象，在容器内受重力影响掉落、相互碰撞，并能响应鼠标拖拽交互。此效果应使用 'matter-js' 物理引擎实现。请导入并使用项目中已有的名为 'FallingText' 的 React 组件来实现此效果。将其放置在一个具有相对定位和固定高度（例如 400px）并隐藏溢出的容器内，设置初始文本为 'These words will fall down!'。考虑添加触发方式（如自动、滚动、点击）、高亮特定单词、调整重力、字体大小等作为可配置选项。"
+  },
+  {
+    "id": "pixel-aura-effect-01",
+    "name": "pixel光圈 (Pixel Aura)",
+    "category": "鼠标交互",
+    "description": "鼠标悬停或聚焦时，在元素周围产生动态像素光环效果。像素会基于距离中心的位置延迟出现、闪烁，并在交互结束时消失。",
+    "preview": "previews/pixel-aura-preview.gif",
+    "codeSnippet": {
+      "import": "import PixelCard from './components/PixelCard';",
+      "usage": "<PixelCard\n  variant=\"blue\" // 尝试 'default', 'blue', 'yellow', 'pink'\n  /* 可选属性:\n     gap={8}        // 像素间隙 (数字)\n     speed={30}      // 动画速度 (数字, 影响闪烁)\n     colors=\"#e0f2fe,#7dd3fc,#0ea5e9\" // 像素颜色 (逗号分隔的 hex 颜色字符串)\n     noFocus={false} // 是否禁用 focus 触发 (布尔值)\n     className=\"your-custom-class\" // 添加自定义 CSS 类\n  */\n>\n  {/* PixelCard 包裹的内容会显示在效果上方 */}\n  <div style={{\n    padding: '2rem 3rem', \n    backgroundColor: 'rgba(255, 255, 255, 0.8)', // 加个背景以便看清文字\n    borderRadius: '8px', \n    textAlign: 'center',\n    position: 'relative', // 确保内容在 Canvas 之上 (虽然组件内部可能已处理)\n    zIndex: 1 \n  }}>\n    Hover or Focus Me\n  </div>\n</PixelCard>",
+      "componentLink": null
+    },
+    "type": "fragment",
+    "promptFragment": "创建一个鼠标交互效果：当鼠标悬停在某个元素（或该元素获得焦点）时，在其周围使用 HTML Canvas 绘制一个由许多小方块（像素）组成的动态光环。这些像素应具有出现动画（例如，基于与中心的距离延迟出现），并在悬停/聚焦状态下持续闪烁或微动（shimmer）。当鼠标移开或元素失焦时，像素应执行消失动画。此效果应封装在一个名为 'PixelCard' 的 React 组件中，该组件可以包裹任何子内容，子内容应显示在像素效果之上。请导入并使用项目中已有的 'PixelCard' 组件实现此效果。提供可配置项，例如多种预设颜色/速度方案（variant）、像素颜色（colors）、动画速度（speed）、像素之间的间隙（gap）以及是否响应焦点事件（noFocus）。"
+  },
+  {
+    "id": "mouse-crosshair-effect-01",
+    "name": "鼠标坐标轴 (Mouse Crosshair)",
+    "category": "鼠标交互",
+    "description": "创建跟随鼠标移动的水平和垂直线条（十字准线），可通过 GSAP 平滑过渡。可选地将效果限制在特定容器内，并在鼠标悬停于链接上时应用 SVG 扭曲效果。",
+    "preview": "previews/mouse-crosshair-preview.gif",
+    "codeSnippet": {
+      "import": "import { useRef } from 'react';\nimport Crosshair from './components/Crosshair';",
+      "usage": "// 全局效果 (fixed positioning):\n// <Crosshair color=\"white\" />\n\n// 限制在容器内效果:\nconst ContainerWithCrosshair = () => {\n  const myContainerRef = useRef(null);\n\n  return (\n    <div\n      ref={myContainerRef}\n      style={{\n        position: 'relative', // 重要：为 Crosshair 提供定位上下文\n        height: '300px',\n        width: '100%',\n        border: '1px solid #ccc',\n        display: 'flex',\n        alignItems: 'center',\n        justifyContent: 'center',\n        overflow: 'hidden' // 防止准线绘制到外部\n      }}\n    >\n      <p style={{ marginRight: '20px', color: '#ddd' }}>在此框内移动鼠标。</p>\n      <a href=\"#\" style={{ color: 'lightblue', padding: '10px' }}>悬停我查看效果</a>\n\n      {/* 将容器的 ref 传递给 Crosshair */}\n      {/* Crosshair 会绝对定位于此 div 内 */}\n      <Crosshair color=\"lightblue\" containerRef={myContainerRef} />\n    </div>\n  );\n};",
+      "componentLink": null
+    },
+    "type": "fragment",
+    "promptFragment": "创建一个鼠标交互效果，在屏幕上或指定的容器内显示一个跟随鼠标光标的十字准线（水平和垂直线）。使用 GSAP 实现线条位置的平滑插值（lerp）动画。当鼠标进入指定容器或首次移动时，线条平滑出现；当鼠标离开容器时，线条平滑消失。当鼠标悬停在容器内（或全局）的<a>标签链接上时，对十字准线应用短暂的 SVG 扭曲滤镜效果（feTurbulence/feDisplacementMap）。该效果应由名为 'Crosshair' 的 React 组件实现，允许通过 'color' prop 自定义线条颜色，并通过 'containerRef' prop 可选地将其绑定到特定的 DOM 元素容器。"
+  },
+  {
+    "id": "liquid-chrome-background-01",
+    "name": "黑白流体 (Liquid Chrome)",
+    "category": "背景",
+    "description": "使用 OGL (WebGL) 创建一个动态的、类似液态金属或流体的背景效果。图案会随着时间流动，并能响应鼠标/触摸移动进行交互扭曲。",
+    "preview": "previews/liquid-chrome-preview.gif",
+    "codeSnippet": {
+      "import": "import LiquidChrome from './components/LiquidChrome';",
+      "usage": "<LiquidChrome\n  style={{ height: '400px', width: '100%' }} // 直接设置组件大小和样式\n  baseColor={[0.1, 0.1, 0.1]} // 基础颜色 (RGB数组, 0-1 值) - 这里是深灰色调\n  /* 可选属性:\n     speed={0.2}        // 动画速度 (数字)\n     amplitude={0.3}    // 扭曲幅度 (数字)\n     frequencyX={3}     // X轴扭曲频率 (数字)\n     frequencyY={3}     // Y轴扭曲频率 (数字)\n     interactive={true} // 是否开启鼠标/触摸交互 (布尔值)\n  */\n/>\n\n{/* 如果需要在背景上放置内容, 可以使用绝对定位: */}\n{/*\n<div style={{ position: 'relative', height: '400px', width: '100%' }}>\n  <LiquidChrome \n    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}\n    baseColor={[0.1, 0.1, 0.1]}\n  />\n  <div style={{ \n    position: 'relative', \n    zIndex: 1, \n    color: 'white', \n    padding: '20px', \n    textAlign: 'center' \n  }}>\n    Content on top of the background\n  </div>\n</div>\n*/}",
+      "componentLink": null
+    },
+    "type": "fragment",
+    "promptFragment": "创建一个基于 WebGL (使用 OGL 库) 的动态背景效果，模拟流动的液态金属或彩色流体外观。此效果应渲染在一个 Canvas 元素上，填满其父容器。背景图案应随时间（`uTime` uniform）自动变化，产生流动感。如果启用交互（`interactive` prop），效果应根据鼠标或触摸位置（`uMouse` uniform）实时扭曲，产生涟漪或拖拽感。请导入并使用项目中已有的名为 'LiquidChrome' 的 React 组件来实现此效果。提供可配置项，包括基础颜色（`baseColor` - RGB数组 0-1），动画速度（`speed`），扭曲幅度（`amplitude`），扭曲频率（`frequencyX`, `frequencyY`）以及是否启用交互（`interactive`）。"
   }
 ]
